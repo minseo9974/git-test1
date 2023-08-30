@@ -1,9 +1,9 @@
-package com.fastcampus.ch3;
+package com.nhnacademy.Testcode;
 
 public class Library {
     private String book[];
     private int size;
-    private static int top;
+    private int top;
 
     public Library(int size) {
         this.size = size;
@@ -21,6 +21,10 @@ public class Library {
         }
     }
 
+    public int getTop() {
+        return this.top;
+    }
+
     public int getSize() {
         return size;
     }
@@ -31,8 +35,7 @@ public class Library {
         }
         for (int i = 0; i <= top; i++) {
             if (s.equals(book[i])) {
-                System.out.println("[" + book[i] + "] 은 이미 있는 책 입니다.");
-                return;
+                throw new IllegalArgumentException("[" + book[i] + "] 은 이미 있는 책 입니다.");
             }
         }
         book[top] = s;
@@ -40,24 +43,21 @@ public class Library {
     }
 
     public void delete(String s) {
-        if (top < 0) {
-            System.out.println("비었습니다.");
-            return;
+        if (top == 0) {
+            throw new IllegalArgumentException("책이 비었습니다.");
         }
-        for (int i = 0; i <= top; i++) {
+        for (int i = 0; i < top; i++) {
             if (book[i].equals(s)) {
-                System.out.println(book[i] + "첵 을 지웠습니다.");
-                for (int j=i; j<=top; j++){
-                    book[j] = book[j+1];
+                System.out.println("[" + book[i] + "] 책 을 지웠습니다.");
+                for (int j = i; j < book.length - 1; j++) {
+                    book[j] = book[j + 1];
                 }
-                book[top--] = "";
-                if (top == -1) { //비었을때 top 초기화
-                    top = 0;
-                }
+                book[book.length - 1] = "";
+                top--;
                 return;
             }
         }
-        System.out.println(s + "책 은 존재 하지 않아 지울수 없습니다.");
+        throw new IllegalArgumentException(s + "책 은 존재 하지 않아 지울수 없습니다.");
     }
 
     public void find(String s) {
@@ -67,7 +67,7 @@ public class Library {
                 return;
             }
         }
-        System.out.println("없는책");
+        throw new IllegalArgumentException(s + "책 은 검색 결과 없는 책 입니다.");
     }
 
     public void findAll() {

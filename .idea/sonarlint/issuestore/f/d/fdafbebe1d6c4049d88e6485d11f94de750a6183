@@ -1,0 +1,10 @@
+
+L
+java:S1197"*Move the array designators [] to the type.(ª¶˜„üÿÿÿÿ8¬‰‰¨¤1
+o	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(žÒœÓùÿÿÿÿ8¯‰‰¨¤1
+L	java:S106*"+Replace this use of System.out by a logger.(Æ—‰óüÿÿÿÿ8²‰‰¨¤1
+G	java:S1063"+Replace this use of System.out by a logger.(Ë¸û§8´‰‰¨¤1
+G	java:S106B"+Replace this use of System.out by a logger.(œÅ³‚8¶‰‰¨¤1
+G	java:S106J"+Replace this use of System.out by a logger.(²Ý¨¦8·‰‰¨¤1
+L	java:S106L"+Replace this use of System.out by a logger.(åšù›øÿÿÿÿ8·‰‰¨¤1
+G	java:S106N"+Replace this use of System.out by a logger.(²Ý¨¦8¸‰‰¨¤1
