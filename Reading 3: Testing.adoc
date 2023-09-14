@@ -1,0 +1,84 @@
+= Reading 3: Testing
+Reference by <https://web.mit.edu/6.005/www/fa15/classes/03-testing/>
+v1.0, 2023-09-14
+
+== Objectives for Today's Class
+* 테스트의 가치를 알고 테스트 우선 프로그래밍을 안다
+* 테스트를 입력과 출력으로 구분하고 좋은 테스트 케이스를 고른다
+* 테스트 적용 범위 측정
+* 언제 블랙박스, 화이트박스 테스트, 단위 테스트와 통합 테스트 그리고 자동화된 회귀 테스트를 사용할지 이해한다
+*** Test Suite : 테스트 하고자 하는 클래스들을 나열
+
+== Validation
+* 목적
+** 프로그램 문제 찾아냄
+** 프로그램 정확성에 대한 확신 높임
+
+* 검증이라고 불리는 프로그램에 대한 형식적 추론
+* Code review 다른 사람이 내코드를 보고 버그를 발견할수 있다
+* Testing 신중하게 입력해 프로그램 실행 결과 확인
+
+최고의 검증을 받더라도 소프트웨어의 완벽한 품질 달성은 어렵다 + 그러므로 테스팅하는것은 프로그램 설계에서 매우 중요하다
+
+== Why Software Testing is Hard
+. 철저한 테스트는 불가
+** 테스트 해야할 범위는 너무 커서 모든 범위를 커버하기 힘들다.
+. 그냥 시도하고 잘 작동하는지 확인하는것은 버그를 발견하기 힘들다
+. 소프트웨어는 무작위, 통계 테스트가 옳지않다
+** 생산 라인의 제조된 제품의 1%를 테스트 (불량품 검사), Z플립 10만번 열고 닫는 검사와 같이 시간을 단축시키는 테스트
+** 소프트웨어는 위 사항이 해당하지 않는다 +
+광범위한 입력 범위에서 괜찮다가 단일 경계지점에서 장애가 발생할수 있다
+
+== Putting on your Testing Hat
+* 프로그램이 작동하지 않게 테스트 하는것도 중요하다
+* 방금 작성한 코드가 가볍게 작동하는 것만을 보기 위해 테스트 하는것은 위험하다 지우는 것을 아까워 하지마라
+* 지우고 고치는걸 두려워하지말고 취약할수있는 모든 부분을 리팩토링해라
+
+== Test-frist Programming
+
+* 단일 함수 개발은 다음과 같은 순서로 진행
+    . 함수의 규격을 작성
+    . 작성한 규격이 실행하는 테스트 작성
+    . 이제 코드가 통과하도록 작성합니다
+* 작성한 규격은 함수의 입출력 동작에 설명
+** parameters의 type과 추가 제약 조건 (``**sqrt**``의 매개변수는 음수가 아니어야 한다.)
+* Test 우선 기법은 규격을 이해하기에 좋은 방법입니다 +
+미리 실패할 test를 작성하면 시간을 낭비하기전에 문제를 조기 발견 가능하다
+
+== Choosing Test Cases by Partitioning
+* 상이한 테스트 사례를 선택후 무작위 테스트로 입력할수 없는 + 공간의 일부를 탐색 함으로 제한된 test 자원을 최대한 활용
+
+**예:** `BigInteger.Multiply()`
+* `BigInteger` 는 범위가 제한된 primitive type +
+ `int`,`long` 과 달리 모든 크기의 정수를 나타내는 java 라이브러리 내장 클래스 +
+ BigInteger는 두개의 BigInteger를 곱하는 메서드 존재
+
+[source, java]
+----
+public BigInteger multiply(BingInteger val)
+
+// for example
+
+BigInteger a = ...;
+BigInteger b = ...;
+BigInteger ab = a.multiply(b);
+----
+* 파라미터는 하나지만 ``multiply``는 실제로 실제로 두 인수의 함수이다
+* `multiply : BigInteger x BigInteger -> BigIntger`
+** 모든 정수쌍은 2차원 입력 공간에 있다 이제 다음과 같이 분할 할수있다
+*** a와 b 둘다 양수
+*** a와 b 둘다 음수
+*** a는 양수 b는 음수
+*** a는 음수 b는 양수
+** 또한 특별한 경우가 있다 : 0, 1, -1
+*** a또는 b는 0, 1 , -1 +
+
+
+* 테스트를 할때 BigInteger가 내부적으로 int나 long으로 표현 가능하다면 그것을 쓰는게 더 빠르니까 +
+그걸 쓰도록 만들어졌다 가정하고 long보다 더 큰 수를 테스트 한다
+** a 또는 b 가 작다
+** a또는 b는 ``Long.MAX_VALUE``보다 큽니다 자바에서 가장 큰 primitive type 정수는 2^63
+
+* (a, b)공간의 모든 관측치를 분할을 하여 a와 b를 독립적으로 나누겠습니다
+
+image::http://web.mit.edu/6.005/www/fa15/classes/03-testing/figures/multiply-partition.png[]
